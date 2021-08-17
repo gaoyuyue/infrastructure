@@ -15,7 +15,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
       - name: Decrypt large secret
-        run: make decrypt
+        run: make decrypt && export $(cat .github/environments/sp.env)
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
       - name: Terraform Format
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - run: make decrypt
+      - run: make decrypt && export $(cat .github/environments/sp.env)
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
       - run: make apply
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - run: make decrypt
+      - run: make decrypt && export $(cat .github/environments/sp.env)
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
       - run: make destroy

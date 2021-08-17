@@ -1,10 +1,9 @@
 #SHELL := /bin/bash
 
 encrypt:
-	gpg --symmetric --cipher-algo AES256 .github/scripts/set_secrets.sh
+	gpg --symmetric --cipher-algo AES256 .github/environments/sp.env
 decrypt:
-	gpg --quiet --batch --yes --decrypt --passphrase="$(LARGE_SECRET_PASSPHRASE)" --output .github/scripts/set_secrets.sh .github/scripts/set_secrets.sh.gpg
-	sh .github/scripts/set_secrets.sh
+	gpg --quiet --batch --yes --decrypt --passphrase="$(LARGE_SECRET_PASSPHRASE)" --output .github/environments/sp.env .github/environments/sp.env.gpg
 create_sp:
 	az ad sp create-for-rbac --role="Contributor"
 setup:
