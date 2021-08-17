@@ -15,7 +15,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
       - name: Decrypt large secret
-        run: make decrypt && export $(cat .github/environments/sp.env)
+        run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
       - name: Terraform Format
@@ -23,13 +23,13 @@ jobs:
         run: terraform fmt -check
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: export $(cat .github/environments/sp.env) && terraform init
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
       - name: Terraform Plan
         id: plan
-        run: make plan
+        run: export $(cat .github/environments/sp.env) && make plan
   terraform-apply: 
     name: "Terraform Apply"
     runs-on: ubuntu-latest
@@ -38,10 +38,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - run: make decrypt && export $(cat .github/environments/sp.env)
+      - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: make apply
+      - run: export $(cat .github/environments/sp.env) && make apply
   terraform-destroy: 
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - run: make decrypt && export $(cat .github/environments/sp.env)
+      - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: make destroy
+      - run: export $(cat .github/environments/sp.env) && make destroy
