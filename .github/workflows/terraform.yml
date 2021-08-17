@@ -41,7 +41,7 @@ jobs:
       - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: export $(cat .github/environments/sp.env) && make apply
+      - run: export $(cat .github/environments/sp.env) && terraform init && make apply
   terraform-destroy: 
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
@@ -53,4 +53,4 @@ jobs:
       - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: export $(cat .github/environments/sp.env) && make destroy
+      - run: export $(cat .github/environments/sp.env) && terraform init && make destroy
