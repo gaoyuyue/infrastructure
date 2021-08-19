@@ -20,6 +20,8 @@ stages:
   displayName: "Publish"
   jobs:
   - job:
+    strategy:
+      maxParallel: 1
     steps:
     - checkout: self
       clean: true
