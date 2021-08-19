@@ -108,7 +108,7 @@ resource "azuredevops_build_definition" "adservice" {
 }
 
 resource "azuredevops_agent_pool" "pool" {
-  name           = "Linux"
+  name = "Linux"
 }
 
 resource "azuredevops_agent_queue" "queue" {
@@ -196,10 +196,10 @@ resource "azurerm_virtual_machine_extension" "pipeline4vme" {
   settings = <<SETTINGS
     {
         "script": "${base64encode(templatefile("install-dependencies.sh", {
-          AZP_TOKEN="${var.ado_pat}"
-          AZP_URL="${data.azuredevops_client_config.c.organization_url}"
-          AZP_POOL="Linux"
-        }))}"
+  AZP_TOKEN = "${var.ado_pat}"
+  AZP_URL   = "${data.azuredevops_client_config.c.organization_url}"
+  AZP_POOL  = "Linux"
+}))}"
     }
 SETTINGS
 }
