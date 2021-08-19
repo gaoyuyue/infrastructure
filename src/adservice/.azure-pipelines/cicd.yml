@@ -6,8 +6,7 @@ trigger:
     include: 
     - src/adservice/.azure-pipelines/cicd.yml
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: Linux
 
 variables:
   containerRegistry: AzureCR
