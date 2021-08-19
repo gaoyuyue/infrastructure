@@ -38,6 +38,7 @@ stages:
   displayName: "Deploy to Dev"
   jobs:
   - deployment: 
+    environment: dev
     strategy:
       runOnce:
         deploy:
