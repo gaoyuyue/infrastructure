@@ -17,6 +17,7 @@ variables:
 
 stages:
 - stage: Publish
+  displayName: "Publish"
   jobs:
   - job:
     steps:
@@ -33,7 +34,8 @@ stages:
         command: buildAndPush
         repository: adservice
         Dockerfile: src/adservice/Dockerfile
-- stage: Deploy Dev
+- stage: DeployToDev
+  displayName: "Deploy to Dev"
   jobs:
   - deployment: 
     strategy:

@@ -20,16 +20,16 @@ jobs:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
       - name: Terraform Format
         id: fmt
-        run: make tf_aks_fmt
+        run: make tf_fmt
       - name: Terraform Init
         id: init
-        run: export $(cat .github/secrets/sp.secret) && make tf_aks_init
+        run: export $(cat .github/environments/terraform.env) && make tf_init
       - name: Terraform Validate
         id: validate
-        run: make tf_aks_validate
+        run: make tf_validate
       - name: Terraform Plan
         id: plan
-        run: export $(cat .github/secrets/sp.secret) && make tf_aks_plan
+        run: export $(cat .github/environments/terraform.env) && make tf_plan
   terraform-apply: 
     name: "Terraform Apply"
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: export $(cat .github/secrets/sp.secret) && make tf_aks_init && make tf_aks_apply
+      - run: export $(cat .github/environments/terraform.env) && make tf_init && make tf_apply
   terraform-destroy: 
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
@@ -53,4 +53,4 @@ jobs:
       - run: make decrypt
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      - run: export $(cat .github/secrets/sp.secret) && make tf_aks_init && make tf_aks_destroy
+      - run: export $(cat .github/environments/terraform.env) && make tf_init && make tf_destroy
