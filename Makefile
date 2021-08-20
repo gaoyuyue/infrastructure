@@ -25,3 +25,6 @@ tf_apply:
 	cd $(terraform_path) && terraform apply -var-file main.tfvars -auto-approve -no-color
 tf_destroy: 
 	cd $(terraform_path) && terraform destroy -var-file main.tfvars -auto-approve -no-color
+
+keygen:
+	cd $(terraform_path) && ssh-keygen -q -t rsa -f id_rsa -N ""

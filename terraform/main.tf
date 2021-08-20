@@ -170,7 +170,7 @@ resource "azurerm_linux_virtual_machine" "pipeline4lvm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("id_rsa.pub")
   }
 
   os_disk {
@@ -188,7 +188,7 @@ resource "azurerm_linux_virtual_machine" "pipeline4lvm" {
 
 resource "azurerm_virtual_machine_extension" "pipeline4vme" {
   name                 = "script"
-  virtual_machine_id   = azurerm_virtual_machine.pipeline4lvm.id
+  virtual_machine_id   = azurerm_linux_virtual_machine.pipeline4lvm.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
   type_handler_version = "2.0"
