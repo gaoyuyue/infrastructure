@@ -20,8 +20,8 @@ stages:
             displayName: Kubectl Apply
             inputs:
               connectionType: Azure Resource Manager
-              azureSubscriptionEndpoint: "$(azureSubscriptionEndpoint)"
-              azureResourceGroup: "$(azureResourceGroup)"
-              kubernetesCluster: "$(kubernetesCluster)"
+              azureSubscriptionEndpoint: ${{ variables.azureSubscriptionEndpoint }}
+              azureResourceGroup: ${{ variables.azureResourceGroup }}
+              kubernetesCluster: ${{ variables.kubernetesCluster }}
               command: apply
               arguments: "-f kubernetes-manifests/${{ parameters.appName }}.yaml"
