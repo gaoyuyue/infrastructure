@@ -7,6 +7,8 @@ stages:
   displayName: "Publish"
   jobs:
   - job:
+    variables:
+      containerRegistry: AzureCR
     steps:
     - checkout: self
       clean: true
@@ -21,21 +23,7 @@ stages:
         command: buildAndPush
         repository: adservice
         Dockerfile: "src/${{ parameters.appName }}/Dockerfile"
-- stage: DeployToDev
-  displayName: "Deploy to Dev"
-  jobs:
-  - deployment: 
-    environment: dev
-    strategy:
-      runOnce:
-        deploy:
-          steps:   
-          - task: Kubernetes@1
-            displayName: Kubectl Apply
-            inputs:
-              connectionType: Azure Resource Manager
-              azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-              azureResourceGroup: $(azureResourceGroup)
-              kubernetesCluster: $(kubernetesCluster)
-              command: apply
-              arguments: "-f kubernetes-manifests/${{ parameters.appName }}.yaml"
+- template: cd.tpl.yml
+  parameters:
+    appName: ${{ parameters.appName }}
+    env: dev

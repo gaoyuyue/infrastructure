@@ -1,5 +1,4 @@
 variables:
-  containerRegistry: AzureCR
   azureSubscriptionEndpoint: AzureRM
   azureResourceGroup: k8s4rg
   kubernetesCluster: k8s4kc

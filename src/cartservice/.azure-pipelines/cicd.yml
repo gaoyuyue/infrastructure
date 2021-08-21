@@ -4,11 +4,11 @@ trigger:
     - main
   paths:
     include: 
-    - src/adservice/.azure-pipelines/cicd.yml
+    - src/cartservice/.azure-pipelines/cicd.yml
 
 pool: Linux
 
 stages:
 - template: ../../.azure-pipelines/templates/cicd.tpl.yml
   parameters:
-    appName: adservice
+    appName: cartservice

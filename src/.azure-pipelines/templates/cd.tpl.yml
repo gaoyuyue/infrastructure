@@ -1,0 +1,27 @@
+parameters:
+- name: env
+  type: string
+- name: appName
+  type: string
+
+stages:
+- stage: "deploy_to_${{ parameters.env }}"
+  displayName: "Deploy to ${{ parameters.env }}"
+  jobs:
+  - deployment: 
+    variables:
+    - template: ../variables/${{ parameters.env }}.tpl.yml
+    environment: ${{ parameters.env }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:   
+          - task: Kubernetes@1
+            displayName: Kubectl Apply
+            inputs:
+              connectionType: Azure Resource Manager
+              azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+              azureResourceGroup: $(azureResourceGroup)
+              kubernetesCluster: $(kubernetesCluster)
+              command: apply
+              arguments: "-f kubernetes-manifests/${{ parameters.appName }}.yaml"

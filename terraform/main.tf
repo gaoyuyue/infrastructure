@@ -90,9 +90,10 @@ resource "azuredevops_serviceendpoint_azurerm" "azurerm" {
   azurerm_subscription_name = data.azurerm_subscription.current.display_name
 }
 
-resource "azuredevops_build_definition" "adservice" {
+resource "azuredevops_build_definition" "pipelines" {
+  for_each   = var.pipelines
   project_id = azuredevops_project.k8s.id
-  name       = "adservice"
+  name       = each.key
 
   ci_trigger {
     use_yaml = true
@@ -102,7 +103,7 @@ resource "azuredevops_build_definition" "adservice" {
     repo_type             = "GitHub"
     repo_id               = "gaoyuyue/infrastructure"
     branch_name           = "main"
-    yml_path              = "src/adservice/.azure-pipelines/cicd.yml"
+    yml_path              = "src/${each.key}/.azure-pipelines/cicd.yml"
     service_connection_id = azuredevops_serviceendpoint_github.github.id
   }
 }

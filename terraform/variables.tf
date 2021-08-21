@@ -12,3 +12,8 @@ variable "ado_pat" {
   type        = string
   description = "The Azure Devops Personal Access Token"
 }
+
+variable "pipelines" {
+  type        = set(string)
+  description = "The Azure Pipeline Name List"
+}
