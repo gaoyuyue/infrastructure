@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: paymentservice
+        image: k8s4cr.azurecr.io/paymentservice
         ports:
         - containerPort: 50051
         env:

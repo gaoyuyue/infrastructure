@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: server
-        image: shippingservice
+        image: k8s4cr.azurecr.io/shippingservice
         ports:
         - containerPort: 50051
         env:

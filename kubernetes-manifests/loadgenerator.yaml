@@ -32,7 +32,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: main
-        image: loadgenerator
+        image: k8s4cr.azurecr.io/loadgenerator
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"

@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: checkoutservice
+          image: k8s4cr.azurecr.io/checkoutservice
           ports:
           - containerPort: 5050
           readinessProbe:

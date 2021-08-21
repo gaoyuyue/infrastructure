@@ -30,7 +30,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: frontend
+          image: k8s4cr.azurecr.io/frontend
           ports:
           - containerPort: 8080
           readinessProbe:

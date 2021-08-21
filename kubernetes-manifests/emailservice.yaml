@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: emailservice
+        image: k8s4cr.azurecr.io/emailservice
         ports:
         - containerPort: 8080
         env:

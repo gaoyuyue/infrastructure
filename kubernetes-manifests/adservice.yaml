@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: adservice
+        image: k8s4cr.azurecr.io/adservice
         ports:
         - containerPort: 9555
         env:
