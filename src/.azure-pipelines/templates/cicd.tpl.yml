@@ -21,7 +21,7 @@ stages:
       displayName: Build and Push
       inputs:
         command: buildAndPush
-        repository: adservice
+        repository: ${{ parameters.appName }}
         Dockerfile: "src/${{ parameters.appName }}/Dockerfile"
 - template: cd.tpl.yml
   parameters:
