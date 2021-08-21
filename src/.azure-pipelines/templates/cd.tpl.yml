@@ -15,7 +15,9 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:   
+          steps:
+          - checkout: self
+            clean: true
           - task: Kubernetes@1
             displayName: Kubectl Apply
             inputs:
