@@ -199,8 +199,8 @@ resource "azurerm_virtual_machine_extension" "pipeline4vme" {
   AZP_TOKEN = "${var.ado_pat}"
   AZP_URL   = "${data.azuredevops_client_config.c.organization_url}"
   AZP_POOL  = "Linux"
-  USER_NAME="${azurerm_linux_virtual_machine.pipeline4lvm.admin_username}"
-  HOST_NAME="${azurerm_linux_virtual_machine.pipeline4lvm.name}"
+  USER_NAME = "${azurerm_linux_virtual_machine.pipeline4lvm.admin_username}"
+  HOST_NAME = "${azurerm_linux_virtual_machine.pipeline4lvm.name}"
 }))}"
     }
 SETTINGS
