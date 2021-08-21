@@ -9,45 +9,9 @@ trigger:
 pool: Linux
 
 variables:
-  containerRegistry: AzureCR
-  azureSubscriptionEndpoint: AzureRM
-  azureResourceGroup: k8s4rg
-  kubernetesCluster: k8s4kc
+- template: ../../.azure-pipelines/variables/common.tpl.yml
 
 stages:
-- stage: Publish
-  displayName: "Publish"
-  jobs:
-  - job:
-    steps:
-    - checkout: self
-      clean: true
-    - task: Docker@2
-      displayName: Login to ACR
-      inputs:
-        command: login
-        containerRegistry: $(containerRegistry)
-    - task: Docker@2
-      displayName: Build and Push
-      inputs:
-        command: buildAndPush
-        repository: adservice
-        Dockerfile: src/adservice/Dockerfile
-- stage: DeployToDev
-  displayName: "Deploy to Dev"
-  jobs:
-  - deployment: 
-    environment: dev
-    strategy:
-      runOnce:
-        deploy:
-          steps:   
-          - task: Kubernetes@1
-            displayName: Kubectl Apply
-            inputs:
-              connectionType: Azure Resource Manager
-              azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-              azureResourceGroup: $(azureResourceGroup)
-              kubernetesCluster: $(kubernetesCluster)
-              command: apply
-              arguments: -f kubernetes-manifests/adservice.yaml
+- template: ../../.azure-pipelines/templates/cicd.tpl.yml
+  parameters:
+    appName: adservice
