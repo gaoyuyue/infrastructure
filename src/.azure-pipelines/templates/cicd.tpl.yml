@@ -20,7 +20,7 @@ stages:
       inputs:
         command: buildAndPush
         repository: adservice
-        Dockerfile: src/{{ parameters.appName }}/Dockerfile
+        Dockerfile: "src/{{ parameters.appName }}/Dockerfile"
 - stage: DeployToDev
   displayName: "Deploy to Dev"
   jobs:
@@ -38,4 +38,4 @@ stages:
               azureResourceGroup: $(azureResourceGroup)
               kubernetesCluster: $(kubernetesCluster)
               command: apply
-              arguments: -f kubernetes-manifests/{{ parameters.appName }}.yaml
+              arguments: "-f kubernetes-manifests/{{ parameters.appName }}.yaml"
