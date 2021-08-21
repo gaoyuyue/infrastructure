@@ -23,6 +23,7 @@ stages:
         command: buildAndPush
         repository: ${{ parameters.appName }}
         Dockerfile: "src/${{ parameters.appName }}/Dockerfile"
+        tags: latest
 - template: cd.tpl.yml
   parameters:
     appName: ${{ parameters.appName }}
