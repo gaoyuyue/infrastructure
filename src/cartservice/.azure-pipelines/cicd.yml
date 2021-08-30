@@ -28,6 +28,8 @@ stages:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
+        extraProperties: |
+          sonar.branch.name=main
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
