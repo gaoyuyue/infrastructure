@@ -29,6 +29,7 @@ stages:
         projectKey: 'cartservice'
         extraProperties: |
           sonar.projectBaseDir=src/cartservice
+          sonar.exclusions=*
     - task: SonarQubeAnalyze@4
     - task: SonarQubePublish@4
       inputs:
