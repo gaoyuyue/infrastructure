@@ -22,6 +22,12 @@ sudo apt-get update
 sudo apt-get install -yqq kubectl git
 echo "✅ kubectl installed"
 
+# install jdk
+sudo add-apt-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt install openjdk-11-jdk
+echo "✅ jdk installed"
+
 # install azure pipeline agent
 mkdir myagent && cd myagent
 wget https://vstsagentpackage.azureedge.net/agent/2.190.0/vsts-agent-linux-x64-2.190.0.tar.gz
