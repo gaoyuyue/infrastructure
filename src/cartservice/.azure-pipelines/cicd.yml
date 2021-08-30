@@ -9,6 +9,24 @@ trigger:
 pool: Linux
 
 stages:
+- stage: SonarQube
+  displayName: "SonarQube"
+  jobs:
+  - job:
+    variables:
+      sonarQube: SonarQube
+    steps:
+    - checkout: self
+      clean: true
+    - task: SonarQubePrepare@4
+      inputs:
+        SonarQube: ${{ variables.sonarQube }}
+        scannerMode: 'MSBuild'
+        projectKey: 'cartservice'
+    - task: SonarQubeAnalyze@4
+    - task: SonarQubePublish@4
+      inputs:
+        pollingTimeoutSec: '300'
 - template: ../../.azure-pipelines/templates/cicd.tpl.yml
   parameters:
     appName: cartservice
