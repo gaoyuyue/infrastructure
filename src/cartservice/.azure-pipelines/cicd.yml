@@ -27,6 +27,8 @@ stages:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
+        extraProperties: |
+          sonar.projectBaseDir=src/cartservice
     - task: SonarQubeAnalyze@4
     - task: SonarQubePublish@4
       inputs:
