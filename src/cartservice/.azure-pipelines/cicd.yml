@@ -31,7 +31,7 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
-        projects: 'src/cartservice/cartservice.csproj'
+        projects: '**/*.csproj'
     - task: SonarQubeAnalyze@4
     - task: SonarQubePublish@4
       inputs:
