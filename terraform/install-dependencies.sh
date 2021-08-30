@@ -25,7 +25,8 @@ echo "✅ kubectl installed"
 # install jdk
 sudo add-apt-repository ppa:openjdk-r/ppa
 sudo apt-get update
-sudo apt install openjdk-11-jdk
+sudo apt-get install -yqq openjdk-11-jdk
+sudo apt-get -yqq autoremove
 echo "✅ jdk installed"
 
 # install azure pipeline agent
