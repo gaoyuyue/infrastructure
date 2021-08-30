@@ -21,15 +21,16 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '2.0.0'
+        version: '5.0.0'
     - task: SonarQubePrepare@4
       inputs:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
-        extraProperties: |
-          sonar.projectBaseDir=src/cartservice
-          sonar.exclusions=*
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: 'src/cartservice'
     - task: SonarQubeAnalyze@4
     - task: SonarQubePublish@4
       inputs:
