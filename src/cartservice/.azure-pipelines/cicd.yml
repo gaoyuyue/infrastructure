@@ -18,6 +18,10 @@ stages:
     steps:
     - checkout: self
       clean: true
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '5.0.400'
     - task: SonarQubePrepare@4
       inputs:
         SonarQube: ${{ variables.sonarQube }}
