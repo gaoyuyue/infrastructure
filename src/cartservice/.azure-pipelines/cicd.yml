@@ -23,6 +23,11 @@ stages:
         packageType: 'sdk'
         version: '5.0.100'
         includePreviewVersions: true
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '2.0.0'
+        includePreviewVersions: true
     - task: SonarQubePrepare@4
       inputs:
         SonarQube: ${{ variables.sonarQube }}
