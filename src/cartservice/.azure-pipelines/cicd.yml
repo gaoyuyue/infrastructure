@@ -40,6 +40,9 @@ stages:
         command: 'build'
         projects: 'src/cartservice/cartservice.csproj'
     - task: SonarQubeAnalyze@4
+      inputs:
+        extraProperties: |
+          sonar.branch.name=master
     - task: SonarQubePublish@4
       inputs:
         pollingTimeoutSec: '300'
