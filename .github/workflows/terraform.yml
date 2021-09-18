@@ -45,7 +45,6 @@ jobs:
   terraform-destroy: 
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
-    needs: terraform-plan
     environment: 'dev'
     steps:
       - uses: actions/checkout@v2
