@@ -5,14 +5,14 @@ trigger:
   paths:
     include: 
     - src/cartservice/*
-pr:
-  paths:
-    include:
-    - src/cartservice/*
-  branches:
-    include:
-    - main
-    - develop
+pr: "*"
+#   paths:
+#     include:
+#     - src/cartservice/*
+#   branches:
+#     include:
+#     - main
+#     - develop
 
 pool: Linux
 
@@ -38,6 +38,13 @@ stages:
         version: '2.0.0'
         includePreviewVersions: true
     - task: SonarQubePrepare@4
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      inputs:
+        SonarQube: ${{ variables.sonarQube }}
+        scannerMode: 'MSBuild'
+        projectKey: 'cartservice'
+    - task: SonarQubePrepare@4
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
       inputs:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
