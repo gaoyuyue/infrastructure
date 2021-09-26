@@ -4,7 +4,15 @@ trigger:
     - main
   paths:
     include: 
-    - src/cartservice/.azure-pipelines/cicd.yml
+    - src/cartservice/*
+pr:
+  paths:
+    include:
+    - src/cartservice/*
+  branches:
+    include:
+    - main
+    - develop
 
 pool: Linux
 
@@ -34,6 +42,10 @@ stages:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
+        extraProperties: |
+          sonar.pullrequest.key=$(System.PullRequest.PullRequestId)
+          sonar.pullrequest.branch=$(System.PullRequest.SourceBranch)
+          sonar.pullrequest.base=$(System.PullRequest.TargetBranch)
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
