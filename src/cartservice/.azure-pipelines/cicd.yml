@@ -58,17 +58,9 @@ stages:
         echo "##vso[task.setvariable variable=isPr]$isPr"
         if($isPr) {
           $pr = $prs[0]
-          echo "##vso[task.setvariable variable=prId]$pr.id"
+          echo "##vso[task.setvariable variable=prId]$pr.number"
           echo "##vso[task.setvariable variable=prSourceBranch]$pr.head.ref"
           echo "##vso[task.setvariable variable=prTargetBranch]$pr.base.ref"
-
-          $pr.id
-          $pr.head.ref
-          $pr.base.ref
-
-          echo '$(prId)'
-          echo '$(prSourceBranch)'
-          echo '$(prTargetBranch)'
         }
     - task: SonarQubePrepare@4
       condition: and(succeeded(), eq(variables['isPr'], 'False'))
