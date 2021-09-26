@@ -30,7 +30,8 @@ stages:
   jobs:
   - job:
     variables:
-      - sonarQube: SonarQube
+      - name: sonarQube
+        value: SonarQube
       - group: DEV
     steps:
     - checkout: self
