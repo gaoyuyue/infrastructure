@@ -45,6 +45,7 @@ namespace cartservice.services
         public async override Task<Empty> EmptyCart(EmptyCartRequest request, ServerCallContext context)
         {
             await _cartStore.EmptyCartAsync(request.UserId);
+            throw new Exception("hello");
             return Empty;
         }
     }
