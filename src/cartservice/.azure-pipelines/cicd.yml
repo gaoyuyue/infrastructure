@@ -89,7 +89,7 @@ stages:
         pollingTimeoutSec: '300'
     - pwsh: | 
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /k:"cartservice" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key=$(prId) /d:sonar.pullrequest.branch=$(prSourceBranch) /d:sonar.pullrequest.base=$(prTargetBranch)
+        dotnet sonarscanner begin /k:"cartservice" /d:sonar.host.url="http://sonar.goawesome.in" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key=$(prId) /d:sonar.pullrequest.branch=$(prSourceBranch) /d:sonar.pullrequest.base=$(prTargetBranch)
         dotnet build src/cartservice/cartservice.csproj
         dotnet sonarscanner end /d:sonar.login="$(sonarToken)"
       condition: and(succeeded(), eq(variables['isPr'], 'True'))
