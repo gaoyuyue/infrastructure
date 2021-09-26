@@ -1,13 +1,13 @@
-trigger:
-  branches:
-    include:
-    - main
-  paths:
-    include: 
-    - src/cartservice/*
-pr:
-- main
-- develop
+# trigger:
+#   branches:
+#     include:
+#     - main
+#   paths:
+#     include: 
+#     - src/cartservice/*
+# pr:
+# - main
+# - develop
 #   paths:
 #     include:
 #     - src/cartservice/*
@@ -15,6 +15,10 @@ pr:
 #     include:
 #     - main
 #     - develop
+pr:
+  branches:
+    include:
+    - '*' 
 
 pool: Linux
 
