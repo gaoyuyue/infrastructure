@@ -30,7 +30,8 @@ stages:
   jobs:
   - job:
     variables:
-      sonarQube: SonarQube
+      - sonarQube: SonarQube
+      - group: DEV
     steps:
     - checkout: self
       clean: true
@@ -60,9 +61,13 @@ stages:
           echo "##vso[task.setvariable variable=prSourceBranch]$pr.head.ref"
           echo "##vso[task.setvariable variable=prTargetBranch]$pr.base.ref"
 
-          echo '$pr.id'
-          echo '$pr.head.ref'
-          echo '$pr.base.ref'
+          $pr.id
+          $pr.head.ref
+          $pr.base.ref
+
+          echo '$(prId)'
+          echo '$(prSourceBranch)'
+          echo '$(prTargetBranch)'
         }
     - task: SonarQubePrepare@4
       condition: and(succeeded(), eq(variables['isPr'], 'False'))
@@ -70,24 +75,23 @@ stages:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
-    - task: SonarQubePrepare@4
-      condition: and(succeeded(), eq(variables['isPr'], 'True'))
-      inputs:
-        SonarQube: ${{ variables.sonarQube }}
-        scannerMode: 'MSBuild'
-        projectKey: 'cartservice'
-        extraProperties: |
-          sonar.pullrequest.key=$(prId)
-          sonar.pullrequest.branch=$(prSourceBranch)
-          sonar.pullrequest.base=$(prTargetBranch)
     - task: DotNetCoreCLI@2
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
       inputs:
         command: 'build'
         projects: 'src/cartservice/cartservice.csproj'
     - task: SonarQubeAnalyze@4
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
     - task: SonarQubePublish@4
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
       inputs:
         pollingTimeoutSec: '300'
+    - pwsh: | 
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:"cartservice" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key=$(prId) /d:sonar.pullrequest.branch=$(prSourceBranch) /d:sonar.pullrequest.base=$(prTargetBranch)
+        dotnet build src/cartservice/cartservice.csproj
+        dotnet sonarscanner end /d:sonar.login="$(sonarToken)"
+      condition: and(succeeded(), eq(variables['isPr'], 'True'))
 - template: ../../.azure-pipelines/templates/cicd.tpl.yml
   parameters:
     appName: cartservice
