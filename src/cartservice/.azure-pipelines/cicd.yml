@@ -39,6 +39,11 @@ stages:
         packageType: 'sdk'
         version: '2.0.0'
         includePreviewVersions: true
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.1.100'
+        includePreviewVersions: true
     - task: SonarQubePrepare@4
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
       inputs:
