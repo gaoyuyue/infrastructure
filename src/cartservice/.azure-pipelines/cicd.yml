@@ -5,7 +5,9 @@ trigger:
   paths:
     include: 
     - src/cartservice/*
-pr: "*"
+pr:
+- main
+- develop
 #   paths:
 #     include:
 #     - src/cartservice/*
