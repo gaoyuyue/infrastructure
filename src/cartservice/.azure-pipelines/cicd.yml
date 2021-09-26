@@ -59,14 +59,15 @@ stages:
           echo "##vso[task.setvariable variable=prSourceBranch;$pr.head.ref]"
           echo "##vso[task.setvariable variable=prTargetBranch;$pr.base.ref]"
         }
+      name: Check
     - task: SonarQubePrepare@4
-      condition: and(succeeded(), ne(variables['isPr'], 'True'))
+      condition: and(succeeded(), eq(variables['Check.isPr'], 'False'))
       inputs:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
     - task: SonarQubePrepare@4
-      condition: and(succeeded(), eq(variables['isPr'], 'True'))
+      condition: and(succeeded(), eq(variables['Check.isPr'], 'True'))
       inputs:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
