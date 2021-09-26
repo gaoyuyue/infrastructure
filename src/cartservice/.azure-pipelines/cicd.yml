@@ -50,7 +50,7 @@ stages:
         includePreviewVersions: true
     - pwsh: | 
         echo '$(Build.SourceVersion)'
-        $prs = curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/gaoyuyue/infrastructure/pulls?state=closed | ConvertFrom-Json | Where-Object { $_.merge_commit_sha -eq '$(Build.SourceVersion)'}
+        $prs = curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/gaoyuyue/infrastructure/pulls?state=all | ConvertFrom-Json | Where-Object { $_.merge_commit_sha -eq '$(Build.SourceVersion)'}
         $isPr = $prs.Count -gt 0
         echo "##vso[task.setvariable variable=isPr;$isPr]"
         if($isPr) {
