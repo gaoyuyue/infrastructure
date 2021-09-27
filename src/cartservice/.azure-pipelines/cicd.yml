@@ -1,8 +1,9 @@
-# trigger:
-#   branches:
-#     include:
-#     - main
-# pr: none
+trigger:
+  branches:
+    include:
+    - main
+    - prTest
+pr: none
 #   paths:
 #     include: 
 #     - src/cartservice/*
@@ -16,11 +17,11 @@
 #     include:
 #     - main
 #     - develop
-pr:
-  branches:
-    include:
-    - '*' 
-trigger: none
+# pr:
+#   branches:
+#     include:
+#     - '*' 
+# trigger: none
 
 pool: Linux
 
@@ -51,40 +52,43 @@ stages:
         packageType: 'sdk'
         version: '3.1.100'
         includePreviewVersions: true
-    # - pwsh: | 
-    #     echo '$(Build.SourceVersion)'
-    #     $prs = curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/gaoyuyue/infrastructure/pulls?state=all | ConvertFrom-Json | Where-Object { $_.merge_commit_sha -eq '$(Build.SourceVersion)'}
-    #     $isPr = $prs.Count -gt 0
-    #     echo "##vso[task.setvariable variable=isPr]$isPr"
-    #     if($isPr) {
-    #       $pr = $prs[0]
-    #       echo "##vso[task.setvariable variable=prId]$pr.number"
-    #       echo "##vso[task.setvariable variable=prSourceBranch]$pr.head.ref"
-    #       echo "##vso[task.setvariable variable=prTargetBranch]$pr.base.ref"
-    #     }
+    - pwsh: | 
+        echo '$(Build.SourceVersion)'
+        $prs = curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/gaoyuyue/infrastructure/pulls?state=all | ConvertFrom-Json | Where-Object { $_.merge_commit_sha -eq '$(Build.SourceVersion)'}
+        $isPr = $prs.Count -gt 0
+        echo "##vso[task.setvariable variable=isPr]$isPr"
+        if($isPr) {
+          $pr = $prs[0]
+          echo "##vso[task.setvariable variable=prId]$pr.number"
+          echo "##vso[task.setvariable variable=prSourceBranch]$pr.head.ref"
+          echo "##vso[task.setvariable variable=prTargetBranch]$pr.base.ref"
+        }
     - task: SonarQubePrepare@4
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
       inputs:
         SonarQube: ${{ variables.sonarQube }}
         scannerMode: 'MSBuild'
         projectKey: 'cartservice'
     - task: DotNetCoreCLI@2
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
       inputs:
         command: 'build'
         projects: 'src/cartservice/cartservice.csproj'
     - task: SonarQubeAnalyze@4
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
     - task: SonarQubePublish@4
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['isPr'], 'False'))
       inputs:
         pollingTimeoutSec: '300'
     - pwsh: | 
+        echo 'prNumber: $(prId)'
+        echo 'prSource: $(prSourceBranch)'
+        echo 'prTarget: $(prTargetBranch)'
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /k:"cartservice" /d:sonar.host.url="http://20.94.26.136" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key="$(System.PullRequest.PullRequestNumber)" /d:sonar.pullrequest.branch="b2" /d:sonar.pullrequest.base="b1"
+        dotnet sonarscanner begin /k:"cartservice" /d:sonar.host.url="http://20.94.26.136" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key="$(prId)" /d:sonar.pullrequest.branch="$(prSourceBranch)" /d:sonar.pullrequest.base="$(prTargetBranch)"
         dotnet build src/cartservice/cartservice.csproj
         dotnet sonarscanner end /d:sonar.login="$(sonarToken)"
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['isPr'], 'True'))
 # - template: ../../.azure-pipelines/templates/cicd.tpl.yml
 #   parameters:
 #     appName: cartservice
