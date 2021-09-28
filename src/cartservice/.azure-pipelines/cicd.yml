@@ -53,7 +53,6 @@ stages:
         version: '3.1.100'
         includePreviewVersions: true
     - pwsh: | 
-        echo '$(Build.SourceVersion)'
         $prs = curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/gaoyuyue/infrastructure/pulls?state=all | ConvertFrom-Json | Where-Object { $_.merge_commit_sha -eq '$(Build.SourceVersion)'}
         $isPr = $prs.Count -gt 0
         echo "##vso[task.setvariable variable=isPr]$isPr"
@@ -62,9 +61,11 @@ stages:
           [string]$prId = $pr.number
           [string]$prSourceBranch = $pr.head.ref
           [string]$prTargetBranch = $pr.base.ref
+          [string]$prTargetCommit = $pr.base.sha
           echo "##vso[task.setvariable variable=prId]$prId"
           echo "##vso[task.setvariable variable=prSourceBranch]$prSourceBranch"
           echo "##vso[task.setvariable variable=prTargetBranch]$prTargetBranch"
+          echo "##vso[task.setvariable variable=prTargetCommit]$prTargetCommit"
         }
     - task: SonarQubePrepare@4
       condition: and(succeeded(), eq(variables['isPr'], 'False'))
@@ -84,9 +85,8 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
     - pwsh: | 
-        echo 'prNumber: $(prId)'
-        echo 'prSource: $(prSourceBranch)'
-        echo 'prTarget: $(prTargetBranch)'
+        git reset --hard $(prTargetCommit)
+        git checkout origin/$(prTargetBranch)
         dotnet tool install --global dotnet-sonarscanner
         dotnet sonarscanner begin /k:"cartservice" /d:sonar.host.url="http://20.94.26.136" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key="$(prId)" /d:sonar.pullrequest.branch="$(prSourceBranch)" /d:sonar.pullrequest.base="$(prTargetBranch)"
         dotnet build src/cartservice/cartservice.csproj
