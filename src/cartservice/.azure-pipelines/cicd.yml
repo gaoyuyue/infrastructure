@@ -85,7 +85,7 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
     - pwsh: | 
-        git switch $(prTargetBranch)
+        git checkout $(prTargetBranch)
         git reset --hard $(prTargetCommit)
         git checkout $(Build.SourceVersion)
         dotnet tool install --global dotnet-sonarscanner
