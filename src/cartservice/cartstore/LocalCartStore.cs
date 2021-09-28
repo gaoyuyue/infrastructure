@@ -62,6 +62,7 @@ namespace cartservice.cartstore
 
         public Task EmptyCartAsync(string userId)
         {
+            throw new Exception("a code smell");
             Console.WriteLine($"EmptyCartAsync called with userId={userId}");
             userCartItems[userId] = new Hipstershop.Cart();
 
