@@ -85,8 +85,9 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
     - pwsh: | 
+        git switch $(prTargetBranch)
         git reset --hard $(prTargetCommit)
-        git checkout origin/$(prTargetBranch)
+        git checkout $(Build.SourceVersion)
         dotnet tool install --global dotnet-sonarscanner
         dotnet sonarscanner begin /k:"cartservice" /d:sonar.host.url="http://20.94.26.136" /d:sonar.login="$(sonarToken)" /d:sonar.pullrequest.key="$(prId)" /d:sonar.pullrequest.branch="$(prSourceBranch)" /d:sonar.pullrequest.base="$(prTargetBranch)"
         dotnet build src/cartservice/cartservice.csproj
