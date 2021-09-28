@@ -56,7 +56,7 @@ namespace cartservice.cartstore
 
                 return exVal;
             });
-            throw new Exception("");
+            // throw new Exception("");
             return Task.CompletedTask;
         }
 
