@@ -81,7 +81,6 @@ namespace cartservice.cartstore
 
                     // We weren't able to connect to redis despite 5 retries with exponential backoff
                     throw new ApplicationException("Wasn't able to connect to redis");
-                    // throw new Exception("Wasn't able to connect to redis'");
                 }
 
                 Console.WriteLine("Successfully connected to Redis");
@@ -164,7 +163,6 @@ namespace cartservice.cartstore
             }
             catch (Exception ex)
             {
-                // throw new Exception("hi");
                 throw new RpcException(new Status(StatusCode.FailedPrecondition, $"Can't access cart storage. {ex}"));
             }
         }
@@ -192,8 +190,8 @@ namespace cartservice.cartstore
             }
             catch (Exception ex)
             {
-                // throw new RpcException(new Status(StatusCode.FailedPrecondition, $"Can't access cart storage. {ex}"));
-                throw new Exception("a test!");
+                throw new RpcException(new Status(StatusCode.FailedPrecondition, $"Can't access cart storage. {ex}"));
+                // throw new Exception("a test!");
             }
         }
 
